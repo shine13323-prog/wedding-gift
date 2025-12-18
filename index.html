@@ -4,59 +4,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>婚禮禮金系統</title>
-    <style>
-        :root { --primary: #9a8262; --dark: #5e503f; --light: #f5f2ed; --accent: #c6ac8f; }
-        body { font-family: "Microsoft JhengHei", sans-serif; display: flex; height: 100vh; margin: 0; background: var(--light); overflow: hidden; }
+   <style>
+        /* 方案 A：莫蘭迪溫潤木質調 */
+        :root { 
+            --primary: #9a8262;   /* 焦糖木質色 */
+            --dark: #5e503f;      /* 深咖啡棕 */
+            --light: #f5f2ed;     /* 米杏色背景 */
+            --accent: #c6ac8f;    /* 淺駝色 */
+            --white-glass: rgba(255, 255, 255, 0.7); /* 半透明層 */
+        }
+
+        body { 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            display: flex; 
+            height: 100vh; 
+            margin: 0; 
+            background: var(--light); 
+            overflow: hidden; 
+        }
         
-        /* 左側輸入區 */
-        .input-panel { width: 35%; padding: 25px; background: white; border-right: 4px solid #ddd; display: flex; flex-direction: column; gap: 15px; box-shadow: 2px 0 10px rgba(0,0,0,0.1); z-index: 10; overflow-y: auto; }
-        .status-box { background: rgba(255, 255, 255, 0.5); padding: 12px; border-radius: 8px; text-align: center; font-size: 1.1rem; border: 1px solid #ffcccc; }
+        /* 左側輸入區 - 加入莫蘭迪質感與透明度 */
+        .input-panel { 
+            width: 35%; 
+            padding: 25px; 
+            background-color: white;
+            /* 若之後想加背景圖，請解除下方註解並放入網址 */
+            /* background-image: linear-gradient(var(--white-glass), var(--white-glass)), url('你的圖片網址'); */
+            background-size: cover;
+            background-position: center;
+            border-right: 1px solid var(--accent); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            overflow-y: auto; 
+        }
+
+        .status-box { 
+            background: var(--light); 
+            padding: 12px; 
+            border-radius: 8px; 
+            text-align: center; 
+            font-size: 1.1rem; 
+            border: 1px solid var(--accent); 
+            color: var(--dark);
+        }
         .status-box span { font-weight: bold; color: var(--primary); font-size: 1.4rem; }
         
-        label { font-weight: bold; color: #555; }
-        input.main-input { width: 100%; padding: 12px; font-size: 1.2rem; border: 2px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        input.main-input:focus { border-color: var(--primary); outline: none; }
+        label { font-weight: bold; color: var(--dark); }
+        input.main-input { 
+            width: 100%; padding: 12px; font-size: 1.2rem; 
+            border: 1px solid var(--accent); 
+            border-radius: 6px; box-sizing: border-box; 
+            background: rgba(255,255,255,0.9);
+        }
+        input.main-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 5px rgba(154, 130, 98, 0.3); }
 
         .quick-amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .amt-btn { background: #f8f9fa; border: 1px solid #ddd; padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; }
+        .amt-btn { 
+            background: white; 
+            border: 1px solid var(--accent); 
+            color: var(--dark);
+            padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; 
+            transition: 0.2s;
+        }
         .amt-btn:hover { background: var(--accent); color: white; }
 
-        #addBtn { background: var(--primary); color: white; width: 100%; font-size: 1.4rem; padding: 15px; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        #addBtn { 
+            background: var(--primary); 
+            color: white; width: 100%; font-size: 1.4rem; padding: 15px; 
+            font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; 
+            transition: 0.3s;
+        }
+        #addBtn:hover { background: var(--dark); }
 
         /* 右側列表區 */
         .list-panel { width: 65%; display: flex; flex-direction: column; background: #fff; }
-        .search-bar-container { padding: 15px 25px; background: #eee; border-bottom: 1px solid #ddd; }
-        #searchInput { width: 100%; padding: 12px; font-size: 1rem; border-radius: 50px; border: 1px solid #ccc; box-sizing: border-box; }
+        .search-bar-container { padding: 15px 25px; background: var(--light); border-bottom: 1px solid var(--accent); }
+        #searchInput { 
+            width: 100%; padding: 12px; font-size: 1rem; border-radius: 50px; 
+            border: 1px solid var(--accent); box-sizing: border-box; 
+        }
 
         .table-container { flex: 1; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: var(--dark); color: white; padding: 15px; text-align: left; position: sticky; top: 0; z-index: 5; }
-        td { padding: 8px 15px; border-bottom: 1px solid #eee; }
+        th { background: var(--dark); color: #f5f2ed; padding: 15px; text-align: left; position: sticky; top: 0; z-index: 5; }
+        td { padding: 8px 15px; border-bottom: 1px solid var(--light); }
 
-        /* 修改重點：表格內輸入框樣式 */
         .inline-input {
-            width: 100%;
-            padding: 8px;
-            font-size: 1.1rem;
-            border: 1px solid transparent;
-            background: transparent;
-            border-radius: 4px;
-            transition: all 0.2s;
-            cursor: pointer;
+            width: 100%; padding: 8px; font-size: 1.1rem; border: 1px solid transparent;
+            background: transparent; border-radius: 4px; transition: all 0.2s; cursor: pointer;
+            color: var(--dark);
         }
-        .inline-input:hover { background: #f0f0f0; border-color: #ddd; }
+        .inline-input:hover { background: var(--light); }
         .inline-input:focus { 
-            background: white !important; 
-            border-color: var(--primary) !important; 
-            color: #000 !important;
-            outline: none;
-            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            background: white !important; border-color: var(--primary) !important; 
+            outline: none; box-shadow: 0 0 5px rgba(0,0,0,0.1);
         }
 
-        .summary-float { position: fixed; bottom: 25px; right: 25px; background: rgba(51, 51, 51, 0.9); color: gold; padding: 12px 25px; border-radius: 50px; font-size: 1.3rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 100; }
-        .u-btn { padding: 10px; font-size: 0.8rem; border-radius: 5px; border: none; cursor: pointer; color: white; margin-top: 10px; }
-        .btn-csv { background: #5cb85c; width: 100%; }
-        .btn-clear { background: #999; width: 100%; margin-top: 5px; }
+        /* 總金額浮動框樣式優化 */
+        .summary-float { 
+            position: fixed; bottom: 25px; right: 25px; 
+            background: var(--dark); 
+            color: #f5f2ed; 
+            padding: 12px 25px; border-radius: 50px; font-size: 1.3rem; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; 
+        }
+        .summary-float span#totalAmount { color: #e9dcc9; font-weight: bold; } /* 象牙米色 */
+
+        .u-btn { padding: 10px; font-size: 0.8rem; border-radius: 5px; border: none; cursor: pointer; color: white; margin-top: 10px; opacity: 0.8; }
+        .u-btn:hover { opacity: 1; }
+        .btn-csv { background: var(--primary); width: 100%; }
+        .btn-clear { background: #bbb; width: 100%; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -210,6 +270,7 @@
     </script>
 </body>
 </html>
+
 
 
 
