@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>婚禮禮金系統</title>
-   <style>
+    <title>婚禮禮金收納系統</title>
+    <style>
         /* 方案 A：莫蘭迪溫潤木質調 */
         :root { 
             --primary: #9a8262;   /* 焦糖木質色 */
             --dark: #5e503f;      /* 深咖啡棕 */
             --light: #f5f2ed;     /* 米杏色背景 */
             --accent: #c6ac8f;    /* 淺駝色 */
-            --white-glass: rgba(255, 255, 255, 0.7); /* 半透明層 */
+            --white-glass: rgba(255, 255, 255, 0.75); /* 背景遮罩，提高文字讀取度 */
         }
 
         body { 
@@ -23,70 +23,87 @@
             overflow: hidden; 
         }
         
-        /* 左側輸入區 - 加入莫蘭迪質感與透明度 */
-       .input-panel { 
-    width: 35%; 
-    padding: 25px; 
-    /* 這裡要確保檔名完全正確，包含副檔名 .jpg 或 .png */
-    background-image: linear-gradient(var(--white-glass), var(--white-glass)), url('flower.jpg');
-    background-size: cover;
-    background-position: center;
-    /* 其他屬性保持不變... */
-}
+        /* 左側輸入區 - 增加間距與背景圖設定 */
+        .input-panel { 
+            width: 35%; 
+            padding: 40px 30px; /* 增加上下內距，讓標題不擁擠 */
+            background-color: white;
+            /* 背景圖設定：如果圖片上傳後檔名不同，請自行修改下方 flower.jpg */
+            background-image: linear-gradient(var(--white-glass), var(--white-glass)), url('flower.jpg');
+            background-size: cover;
+            background-position: center;
+            border-right: 1px solid var(--accent); 
+            display: flex; 
+            flex-direction: column; 
+            gap: 28px; /* 全面拉開各個輸入框之間的距離 */
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05); 
+            z-index: 10; 
+            overflow-y: auto; 
+        }
 
         .status-box { 
-            background: var(--light); 
-            padding: 12px; 
-            border-radius: 8px; 
+            background: rgba(255,255,255,0.5); 
+            padding: 15px; 
+            border-radius: 12px; 
             text-align: center; 
             font-size: 1.1rem; 
             border: 1px solid var(--accent); 
             color: var(--dark);
+            margin-bottom: 10px;
         }
-        .status-box span { font-weight: bold; color: var(--primary); font-size: 1.4rem; }
+        .status-box span { font-weight: bold; color: var(--primary); font-size: 1.5rem; }
         
-        label { font-weight: bold; color: var(--dark); }
-        input.main-input { 
-            width: 100%; padding: 12px; font-size: 1.2rem; 
-            border: 1px solid var(--accent); 
-            border-radius: 6px; box-sizing: border-box; 
-            background: rgba(255,255,255,0.9);
+        /* 標籤文字加寬間距 */
+        label { 
+            font-weight: bold; 
+            color: var(--dark); 
+            display: block;
+            margin-bottom: 10px; /* 標題文字與輸入框的距離 */
+            font-size: 1.05rem;
         }
-        input.main-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 5px rgba(154, 130, 98, 0.3); }
 
-        .quick-amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        input.main-input { 
+            width: 100%; padding: 15px; font-size: 1.2rem; 
+            border: 1px solid var(--accent); 
+            border-radius: 8px; box-sizing: border-box; 
+            background: rgba(255,255,255,0.9);
+            transition: 0.3s;
+        }
+        input.main-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 8px rgba(154, 130, 98, 0.3); }
+
+        .quick-amounts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .amt-btn { 
             background: white; 
             border: 1px solid var(--accent); 
             color: var(--dark);
-            padding: 8px; border-radius: 4px; cursor: pointer; font-size: 0.9rem; 
+            padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.95rem; 
             transition: 0.2s;
         }
         .amt-btn:hover { background: var(--accent); color: white; }
 
         #addBtn { 
             background: var(--primary); 
-            color: white; width: 100%; font-size: 1.4rem; padding: 15px; 
-            font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; 
+            color: white; width: 100%; font-size: 1.4rem; padding: 18px; 
+            font-weight: bold; border: none; border-radius: 10px; cursor: pointer; 
+            margin-top: 15px; /* 與上方快速按鈕拉開距離 */
             transition: 0.3s;
-            #addBtn { 
-    /* ... 保持原本的其他設定 ... */
-    margin-top: 15px; /* 給確認按鈕上方多一點呼吸空間 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        #addBtn:hover { background: var(--dark); }
+        #addBtn:hover { background: var(--dark); transform: translateY(-2px); }
 
         /* 右側列表區 */
         .list-panel { width: 65%; display: flex; flex-direction: column; background: #fff; }
-        .search-bar-container { padding: 15px 25px; background: var(--light); border-bottom: 1px solid var(--accent); }
+        .search-bar-container { padding: 20px 30px; background: var(--light); border-bottom: 1px solid var(--accent); }
         #searchInput { 
-            width: 100%; padding: 12px; font-size: 1rem; border-radius: 50px; 
+            width: 100%; padding: 15px; font-size: 1rem; border-radius: 50px; 
             border: 1px solid var(--accent); box-sizing: border-box; 
+            background: white;
         }
 
         .table-container { flex: 1; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: var(--dark); color: #f5f2ed; padding: 15px; text-align: left; position: sticky; top: 0; z-index: 5; }
-        td { padding: 8px 15px; border-bottom: 1px solid var(--light); }
+        th { background: var(--dark); color: #f5f2ed; padding: 18px; text-align: left; position: sticky; top: 0; z-index: 5; }
+        td { padding: 12px 18px; border-bottom: 1px solid var(--light); }
 
         .inline-input {
             width: 100%; padding: 8px; font-size: 1.1rem; border: 1px solid transparent;
@@ -101,179 +118,9 @@
 
         /* 總金額浮動框樣式優化 */
         .summary-float { 
-            position: fixed; bottom: 25px; right: 25px; 
+            position: fixed; bottom: 30px; right: 30px; 
             background: var(--dark); 
             color: #f5f2ed; 
-            padding: 12px 25px; border-radius: 50px; font-size: 1.3rem; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; 
-        }
-        .summary-float span#totalAmount { color: #e9dcc9; font-weight: bold; } /* 象牙米色 */
-
-        .u-btn { padding: 10px; font-size: 0.8rem; border-radius: 5px; border: none; cursor: pointer; color: white; margin-top: 10px; opacity: 0.8; }
-        .u-btn:hover { opacity: 1; }
-        .btn-csv { background: var(--primary); width: 100%; }
-        .btn-clear { background: #bbb; width: 100%; margin-top: 5px; }
-    </style>
-</head>
-<body>
-
-    <div class="input-panel">
-        <h2 style="text-align:center;">🧧 婚禮禮金系統</h2>
-        <div class="status-box">下一組編號：<span id="nextId">1</span></div>
-        
-        <label>送禮人姓名</label>
-        <input type="text" id="nameInput" class="main-input" placeholder="姓名" autocomplete="off">
-        
-        <label>金額</label>
-        <input type="number" id="amountInput" class="main-input" placeholder="金額" inputmode="numeric">
-        <div class="quick-amounts">
-            <button class="amt-btn" onclick="setAmount(1200)">1200</button>
-            <button class="amt-btn" onclick="setAmount(2000)">2000</button>
-            <button class="amt-btn" onclick="setAmount(2600)">2600</button>
-            <button class="amt-btn" onclick="setAmount(3200)">3200</button>
-            <button class="amt-btn" onclick="setAmount(3600)">3600</button>
-            <button class="amt-btn" onclick="setAmount(6600)">6600</button>
-        </div>
-
-        <button id="addBtn" onclick="addEntry()">確認加入 (Enter)</button>
-
-        <div style="margin-top: auto;">
-            <button class="u-btn btn-csv" onclick="exportToCSV()">📥 下載 CSV 備份</button>
-            <button class="u-btn btn-clear" onclick="clearAllData()">🗑️ 清空所有資料</button>
-        </div>
-    </div>
-
-    <div class="list-panel">
-        <div class="search-bar-container">
-            <input type="text" id="searchInput" placeholder="🔍 搜尋姓名或編號..." oninput="renderTable()">
-        </div>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th width="15%">編號</th>
-                        <th width="35%">姓名 (點擊修改)</th>
-                        <th width="35%">金額 (點擊修改)</th>
-                        <th width="15%">操作</th>
-                    </tr>
-                </thead>
-                <tbody id="listBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="summary-float">
-        總計：<span id="totalAmount">0</span> 元 (<span id="totalCount">0</span> 包)
-    </div>
-
-    <script>
-        let entries = [];
-        let nextId = 1;
-
-        window.onload = () => {
-            const saved = localStorage.getItem('wedding_v2');
-            if (saved) {
-                entries = JSON.parse(saved);
-                if (entries.length > 0) nextId = Math.max(...entries.map(e => e.id)) + 1;
-            }
-            renderTable();
-        };
-
-        function setAmount(val) {
-            document.getElementById('amountInput').value = val;
-            document.getElementById('addBtn').focus();
-        }
-
-        function addEntry() {
-            const nIn = document.getElementById("nameInput");
-            const aIn = document.getElementById("amountInput");
-            if (!nIn.value.trim() || !aIn.value) return alert("請填寫姓名與金額");
-
-            entries.unshift({ id: nextId++, name: nIn.value.trim(), amount: parseInt(aIn.value) });
-            nIn.value = ""; aIn.value = "";
-            nIn.focus();
-            saveAndRender();
-        }
-
-        function saveAndRender() {
-            localStorage.setItem('wedding_v2', JSON.stringify(entries));
-            renderTable();
-        }
-
-        function renderTable() {
-            const tbody = document.getElementById("listBody");
-            const filter = document.getElementById("searchInput").value.toLowerCase();
-            tbody.innerHTML = "";
-            let total = 0;
-            let count = 0;
-
-            entries.forEach((entry, index) => {
-                if (entry.name.toLowerCase().includes(filter) || String(entry.id).includes(filter)) {
-                    total += entry.amount;
-                    count++;
-                    const row = `
-                        <tr>
-                            <td style="font-weight:bold; color:#888;">#${String(entry.id).padStart(3, '0')}</td>
-                            <td>
-                                <input type="text" class="inline-input" value="${entry.name}" 
-                                       onfocus="this.select()" 
-                                       onchange="update(${index}, 'name', this.value)">
-                            </td>
-                            <td>
-                                <input type="number" class="inline-input" value="${entry.amount}" 
-                                       onfocus="this.select()" 
-                                       onchange="update(${index}, 'amount', this.value)">
-                            </td>
-                            <td>
-                                <button onclick="del(${index})" style="color:#d9534f; border:none; background:none; cursor:pointer; font-size:0.9rem;">刪除</button>
-                            </td>
-                        </tr>`;
-                    tbody.innerHTML += row;
-                }
-            });
-            document.getElementById("nextId").innerText = nextId;
-            document.getElementById("totalAmount").innerText = total.toLocaleString();
-            document.getElementById("totalCount").innerText = count;
-        }
-
-        function update(idx, field, val) {
-            entries[idx][field] = field === 'amount' ? parseInt(val) || 0 : val;
-            saveAndRender();
-        }
-
-        function del(idx) {
-            if(confirm("確定刪除此筆資料？")) { entries.splice(idx, 1); saveAndRender(); }
-        }
-
-        function exportToCSV() {
-            let csv = "\uFEFF編號,姓名,金額\n";
-            [...entries].sort((a,b)=>a.id-b.id).forEach(e => csv += `${e.id},${e.name},${e.amount}\n`);
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `禮金清單_${new Date().toLocaleDateString()}.csv`;
-            a.click();
-        }
-
-        function clearAllData() {
-            if(confirm("確定要清空所有資料嗎？此操作不可復原！")) {
-                entries = []; nextId = 1; localStorage.removeItem('wedding_v2'); renderTable();
-            }
-        }
-
-        document.getElementById("nameInput").addEventListener("keypress", (e) => e.key === "Enter" && document.getElementById("amountInput").focus());
-        document.getElementById("amountInput").addEventListener("keypress", (e) => e.key === "Enter" && addEntry());
-    </script>
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
-
+            padding: 15px 30px; border-radius: 50px; font-size: 1.4rem; 
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2); z-index: 100; 
+            border: 1
