@@ -24,22 +24,15 @@
         }
         
         /* 左側輸入區 - 加入莫蘭迪質感與透明度 */
-        .input-panel { 
-            width: 35%; 
-            padding: 25px; 
-            background-color: white;
-            /* 若之後想加背景圖，請解除下方註解並放入網址 */
-            /* background-image: linear-gradient(var(--white-glass), var(--white-glass)), url('你的圖片網址'); */
-            background-size: cover;
-            background-position: center;
-            border-right: 1px solid var(--accent); 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05); 
-            z-index: 10; 
-            overflow-y: auto; 
-        }
+       .input-panel { 
+    width: 35%; 
+    padding: 25px; 
+    /* 這裡要確保檔名完全正確，包含副檔名 .jpg 或 .png */
+    background-image: linear-gradient(var(--white-glass), var(--white-glass)), url('flower.jpg');
+    background-size: cover;
+    background-position: center;
+    /* 其他屬性保持不變... */
+}
 
         .status-box { 
             background: var(--light); 
@@ -270,6 +263,7 @@
     </script>
 </body>
 </html>
+
 
 
 
